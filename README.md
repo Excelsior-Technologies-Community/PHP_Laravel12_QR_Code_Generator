@@ -59,7 +59,7 @@ php artisan serve
 
 #  Step 2 — Database Configuration (Optional)
 
-📄 .env
+ .env
 
 ```
 DB_CONNECTION=mysql
