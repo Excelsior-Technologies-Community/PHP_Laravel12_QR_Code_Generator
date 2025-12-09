@@ -39,7 +39,7 @@ routes/
 └── web.php
 
 public/
-└── qrcode/           # Stores generated images
+└── qrcode/           
 
 composer.json
 .env
