@@ -1,4 +1,4 @@
-# 🚀 Laravel 12 – QR Code Generator  
+#  PHP_Laravel12_QR_Code_Generator 
 
 <p align="center">
   <img src="https://img.shields.io/badge/Laravel-12.x-f72c1f?style=for-the-badge&logo=laravel" />
@@ -8,9 +8,9 @@
 
 ---
 
-## 📌 Overview  
+##  Overview  
 This project demonstrates how to generate **QR Codes** in Laravel using the package:  
-➡️ simplesoftwareio/simple-qrcode
+ simplesoftwareio/simple-qrcode
 
 You will learn:
 - Basic QR Code  
@@ -22,7 +22,7 @@ You will learn:
 
 ---
 
-## ⭐ Features  
+##  Features  
 - Text QR Code  
 - Save QR Code as PNG  
 - Background color QR  
@@ -33,7 +33,7 @@ You will learn:
 
 ---
 
-## 📁 Folder Structure  
+##  Folder Structure  
 ```
 routes/
 └── web.php
@@ -48,7 +48,7 @@ README.md
 
 ---
 
-# ✅ Step 1 — Install Laravel  
+#  Step 1 — Install Laravel  
 ```bash
 composer create-project laravel/laravel qr-project
 cd qr-project
@@ -57,7 +57,7 @@ php artisan serve
 
 ---
 
-# 🟦 Step 2 — Database Configuration (Optional)
+#  Step 2 — Database Configuration (Optional)
 
 📄 .env
 
@@ -72,23 +72,23 @@ DB_PASSWORD=
 
 ---
 
-# ✅ Step 3 — Install QR Code Package  
+#  Step 3 — Install QR Code Package  
 ```bash
 composer require simplesoftwareio/simple-qrcode
 ```
 
 ---
 
-# 🟩 Step 4 — Import QR Facade  
+#  Step 4 — Import QR Facade  
 ```php
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 ```
 
 ---
 
-# 🟦 Step 5 — Add QR Code Routes  
+#  Step 5 — Add QR Code Routes  
 
-## 🔵 1. Basic QR Code  
+##  1. Basic QR Code  
 ```php
 Route::get('qrcodes', function () {
     return QrCode::size(300)->generate('A basic example of QR code!');
@@ -98,8 +98,8 @@ Route::get('qrcodes', function () {
 
 ---
 
-## 🔵 2. QR Code (Save to File)  
-➡ Create folder first: **public/qrcode/**
+##  2. QR Code (Save to File)  
+ Create folder first: **public/qrcode/**
 
 ```php
 Route::get('qrcode-save', function () {
@@ -110,7 +110,7 @@ Route::get('qrcode-save', function () {
 
 ---
 
-## 🔵 3. QR Code With Background Color  
+##  3. QR Code With Background Color  
 
 ```php
 Route::get('qrcode-with-color', function () {
@@ -123,7 +123,7 @@ Route::get('qrcode-with-color', function () {
 
 ---
 
-## 🔵 4. Email QR Code  
+##  4. Email QR Code  
 
 ```php
 Route::get('qrcode-email', function () {
@@ -135,7 +135,7 @@ Route::get('qrcode-email', function () {
 
 ---
 
-## 🔵 5. Phone Number QR Code  
+##  5. Phone Number QR Code  
 
 ```php
 Route::get('qr-phone', function () {
@@ -146,7 +146,7 @@ Route::get('qr-phone', function () {
 
 ---
 
-## 🔵 6. SMS QR Code  
+##  6. SMS QR Code  
 
 ```php
 Route::get('qr-sms', function () {
@@ -157,7 +157,7 @@ Route::get('qr-sms', function () {
 
 ---
 
-# 🔄 Clear Cache  
+#  Clear Cache  
 
 ```bash
 php artisan route:clear
@@ -168,7 +168,7 @@ php artisan serve
 
 ---
 
-# 🎉 Your Laravel QR System is Ready  
+#  Your Laravel QR System is Ready  
 
 You now have all types of QR codes working:
 ✔ Basic  
@@ -180,5 +180,4 @@ You now have all types of QR codes working:
 
 ---
 
-# 🧡 Credits  
-Made with ❤️ by **Hardik Panchal**
+
