@@ -1,59 +1,183 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#  PHP_Laravel12_QR_Code_Generator 
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://img.shields.io/badge/Laravel-12.x-f72c1f?style=for-the-badge&logo=laravel" />
+  <img src="https://img.shields.io/badge/PHP-8.2-blue?style=for-the-badge&logo=php" />
+  <img src="https://img.shields.io/badge/QR--Code-Generator-green?style=for-the-badge" />
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  Overview  
+This project demonstrates how to generate **QR Codes** in Laravel using the package:  
+ simplesoftwareio/simple-qrcode
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+You will learn:
+- Basic QR Code  
+- Save QR Code to Image  
+- Colored QR Code  
+- Email QR Code  
+- Phone Number QR Code  
+- SMS QR Code  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+##  Features  
+- Text QR Code  
+- Save QR Code as PNG  
+- Background color QR  
+- Email QR Code  
+- Phone Number QR Code  
+- SMS QR Code  
+- Clean routes for each QR example  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+##  Folder Structure  
+```
+routes/
+└── web.php
 
-## Laravel Sponsors
+public/
+└── qrcode/           
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+composer.json
+.env
+README.md
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+#  Step 1 — Install Laravel  
+```bash
+composer create-project laravel/laravel qr-project
+cd qr-project
+php artisan serve
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#  Step 2 — Database Configuration (Optional)
 
-## Code of Conduct
+ .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#  Step 3 — Install QR Code Package  
+```bash
+composer require simplesoftwareio/simple-qrcode
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#  Step 4 — Import QR Facade  
+```php
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+```
+
+---
+
+#  Step 5 — Add QR Code Routes  
+
+##  1. Basic QR Code  
+```php
+Route::get('qrcodes', function () {
+    return QrCode::size(300)->generate('A basic example of QR code!');
+});
+```
+<img width="383" height="393" alt="Screenshot 2025-12-08 180056" src="https://github.com/user-attachments/assets/38d75e4a-657c-42ad-8452-c06f9bd944a9" />
+
+---
+
+##  2. QR Code (Save to File)  
+ Create folder first: **public/qrcode/**
+
+```php
+Route::get('qrcode-save', function () {
+    $path = public_path('qrcode/' . time() . '.png');
+    return QrCode::size(300)->generate('A simple example of QR code', $path);
+});
+```
+
+---
+
+##  3. QR Code With Background Color  
+
+```php
+Route::get('qrcode-with-color', function () {
+    return QrCode::size(300)
+                 ->backgroundColor(255, 55, 0)
+                 ->generate('A simple example of QR code with background color');
+});
+```
+<img width="419" height="366" alt="Screenshot 2025-12-08 175755" src="https://github.com/user-attachments/assets/e14b5f9e-19b6-48e2-8d07-516f975f15ef" />
+
+---
+
+##  4. Email QR Code  
+
+```php
+Route::get('qrcode-email', function () {
+    return QrCode::size(500)
+        ->email('hardik@itsolutionstuff.com', 'Welcome to ItSolutionStuff.com!', 'This is !.');
+});
+```
+<img width="564" height="582" alt="Screenshot 2025-12-08 175947" src="https://github.com/user-attachments/assets/4076dbc5-ac2e-4f6f-a821-0e0aab291682" />
+
+---
+
+##  5. Phone Number QR Code  
+
+```php
+Route::get('qr-phone', function () {
+    return QrCode::size(300)->phoneNumber('111-222-6666');
+});
+```
+<img width="382" height="393" alt="Screenshot 2025-12-08 180014" src="https://github.com/user-attachments/assets/77f0d2ff-18b8-4b0d-833b-8be0c817272b" />
+
+---
+
+##  6. SMS QR Code  
+
+```php
+Route::get('qr-sms', function () {
+    return QrCode::size(300)->SMS('111-222-6666', 'Body of the message');
+});
+```
+<img width="380" height="410" alt="Screenshot 2025-12-08 180028" src="https://github.com/user-attachments/assets/2ab701a6-5867-4d19-9119-819249e3fba3" />
+
+---
+
+#  Clear Cache  
+
+```bash
+php artisan route:clear
+php artisan config:clear
+php artisan cache:clear
+php artisan serve
+```
+
+---
+
+#  Your Laravel QR System is Ready  
+
+You now have all types of QR codes working:
+✔ Basic  
+✔ Save to image  
+✔ Colored  
+✔ Email  
+✔ Phone  
+✔ SMS  
+
+---
+
+
