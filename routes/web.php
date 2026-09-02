@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,3 +85,11 @@ Route::get('qr-phone', function () {
 Route::get('qr-sms', function () {
     return QrCode::size(300)->SMS('111-222-6666', 'Body of the message');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Product QR Code Routes
+| CRUD for products with auto QR generation and share feature
+|--------------------------------------------------------------------------
+*/
+Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
