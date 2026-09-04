@@ -2,36 +2,21 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Add Product</title>
+    <title>Edit {{ $product->name }}</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <style>
-        body {
-            min-height: 100vh;
-        }
-
-        .color-preview {
-            width: 100%;
-            height: 45px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-
-        .qr-preview {
-            width: 180px;
-            height: 180px;
-            border: 8px solid white;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .15);
-        }
-    </style>
 </head>
 
 <body class="bg-light">
@@ -44,10 +29,10 @@
 
             <div class="card shadow">
 
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-warning">
 
                     <h5 class="mb-0">
-                        ➕ Add New Product
+                        ✏️ Edit Product & QR Code
                     </h5>
 
                 </div>
@@ -58,9 +43,7 @@
 
                         <div class="alert alert-danger">
 
-                            <strong>Please fix the following:</strong>
-
-                            <ul class="mb-0 mt-2">
+                            <ul class="mb-0">
 
                                 @foreach($errors->all() as $error)
 
@@ -75,11 +58,13 @@
                     @endif
 
                     <form
-                        action="{{ route('products.store') }}"
+                        action="{{ route('products.update', $product->id) }}"
                         method="POST"
                     >
 
                         @csrf
+
+                        @method('PUT')
 
                         <div class="row">
 
@@ -95,8 +80,7 @@
                                         type="text"
                                         name="name"
                                         class="form-control"
-                                        value="{{ old('name') }}"
-                                        placeholder="e.g. iPhone 15 Pro"
+                                        value="{{ old('name', $product->name) }}"
                                         required
                                     >
 
@@ -116,10 +100,9 @@
                                         type="number"
                                         name="price"
                                         class="form-control"
-                                        value="{{ old('price') }}"
+                                        value="{{ old('price', $product->price) }}"
                                         step="0.01"
                                         min="0"
-                                        placeholder="0.00"
                                         required
                                     >
 
@@ -138,16 +121,15 @@
                             <textarea
                                 name="description"
                                 class="form-control"
-                                rows="3"
-                                placeholder="Product details..."
-                            >{{ old('description') }}</textarea>
+                                rows="4"
+                            >{{ old('description', $product->description) }}</textarea>
 
                         </div>
 
                         <hr>
 
                         <h5 class="mb-3">
-                            🎨 QR Code Customization
+                            🎨 Customize QR Code
                         </h5>
 
                         <div class="row">
@@ -155,16 +137,17 @@
                             <div class="col-md-4">
 
                                 <label class="form-label fw-semibold">
-                                    QR Foreground Color
+                                    Foreground
                                 </label>
 
                                 <input
                                     type="color"
                                     name="qr_foreground_color"
-                                    id="foregroundColor"
-                                    class="form-control form-control-color color-preview"
-                                    value="{{ old('qr_foreground_color', '#000000') }}"
-                                    title="Choose QR foreground color"
+                                    class="form-control form-control-color w-100"
+                                    value="{{ old(
+                                        'qr_foreground_color',
+                                        $product->qr_foreground_color ?? '#000000'
+                                    ) }}"
                                 >
 
                             </div>
@@ -172,16 +155,17 @@
                             <div class="col-md-4">
 
                                 <label class="form-label fw-semibold">
-                                    QR Background Color
+                                    Background
                                 </label>
 
                                 <input
                                     type="color"
                                     name="qr_background_color"
-                                    id="backgroundColor"
-                                    class="form-control form-control-color color-preview"
-                                    value="{{ old('qr_background_color', '#ffffff') }}"
-                                    title="Choose QR background color"
+                                    class="form-control form-control-color w-100"
+                                    value="{{ old(
+                                        'qr_background_color',
+                                        $product->qr_background_color ?? '#ffffff'
+                                    ) }}"
                                 >
 
                             </div>
@@ -194,37 +178,22 @@
 
                                 <select
                                     name="qr_size"
-                                    id="qrSize"
                                     class="form-select"
                                 >
 
-                                    <option value="200">
-                                        200 × 200
-                                    </option>
+                                    @foreach([200, 300, 400, 500, 600, 800, 1000] as $size)
 
-                                    <option value="300" selected>
-                                        300 × 300
-                                    </option>
+                                        <option
+                                            value="{{ $size }}"
+                                            {{ (int) old(
+                                                'qr_size',
+                                                $product->qr_size ?? 300
+                                            ) === $size ? 'selected' : '' }}
+                                        >
+                                            {{ $size }} × {{ $size }}
+                                        </option>
 
-                                    <option value="400">
-                                        400 × 400
-                                    </option>
-
-                                    <option value="500">
-                                        500 × 500
-                                    </option>
-
-                                    <option value="600">
-                                        600 × 600
-                                    </option>
-
-                                    <option value="800">
-                                        800 × 800
-                                    </option>
-
-                                    <option value="1000">
-                                        1000 × 1000
-                                    </option>
+                                    @endforeach
 
                                 </select>
 
@@ -232,14 +201,10 @@
 
                         </div>
 
-                        <div class="alert alert-info mt-4">
+                        <div class="alert alert-warning mt-4">
 
-                            <strong>💡 QR Code Tip</strong>
-
-                            <br>
-
-                            Use a dark foreground with a light background
-                            for better scanning reliability.
+                            ⚠️ Saving this form will regenerate the product QR
+                            code using the selected customization.
 
                         </div>
 
@@ -247,13 +212,13 @@
 
                             <button
                                 type="submit"
-                                class="btn btn-primary"
+                                class="btn btn-warning"
                             >
-                                Save & Generate QR
+                                💾 Update & Regenerate QR
                             </button>
 
                             <a
-                                href="{{ route('products.index') }}"
+                                href="{{ route('products.show', $product->id) }}"
                                 class="btn btn-secondary"
                             >
                                 Cancel
