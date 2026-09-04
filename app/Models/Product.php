@@ -16,6 +16,7 @@ class Product extends Model
         'qr_foreground_color',
         'qr_background_color',
         'qr_size',
+        'status',
     ];
 
     protected $casts = [

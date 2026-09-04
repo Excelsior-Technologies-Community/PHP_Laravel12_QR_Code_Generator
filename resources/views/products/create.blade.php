@@ -3,265 +3,307 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Add Product</title>
+    <title>Create Product</title>
 
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <style>
-        body {
-            min-height: 100vh;
-        }
-
-        .color-preview {
-            width: 100%;
-            height: 45px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-
-        .qr-preview {
-            width: 180px;
-            height: 180px;
-            border: 8px solid white;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, .15);
-        }
-    </style>
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 </head>
 
 <body class="bg-light">
 
-<div class="container py-5">
+    <div class="container py-5">
 
-    <div class="row justify-content-center">
+        <div class="row justify-content-center">
 
-        <div class="col-lg-8">
+            <div class="col-lg-8">
 
-            <div class="card shadow">
+                <div class="card shadow-sm border-0">
 
-                <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h4 class="mb-0">➕ Create Product</h4>
+                    </div>
 
-                    <h5 class="mb-0">
-                        ➕ Add New Product
-                    </h5>
+                    <div class="card-body p-4">
 
-                </div>
-
-                <div class="card-body">
-
-                    @if($errors->any())
-
+                        {{-- Validation Errors --}}
+                        @if ($errors->any())
                         <div class="alert alert-danger">
-
-                            <strong>Please fix the following:</strong>
+                            <strong>Please fix the following errors:</strong>
 
                             <ul class="mb-0 mt-2">
-
-                                @foreach($errors->all() as $error)
-
-                                    <li>{{ $error }}</li>
-
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
                                 @endforeach
-
                             </ul>
-
                         </div>
+                        @endif
 
-                    @endif
+                        <form
+                            action="{{ route('products.store') }}"
+                            method="POST">
 
-                    <form
-                        action="{{ route('products.store') }}"
-                        method="POST"
-                    >
+                            @csrf
 
-                        @csrf
+                            {{-- Product Name --}}
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-semibold">
+                                    Product Name
+                                </label>
 
-                        <div class="row">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    value="{{ old('name') }}"
+                                    placeholder="Enter product name"
+                                    required>
 
-                            <div class="col-md-8">
-
-                                <div class="mb-3">
-
-                                    <label class="form-label fw-semibold">
-                                        Product Name *
-                                    </label>
-
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        class="form-control"
-                                        value="{{ old('name') }}"
-                                        placeholder="e.g. iPhone 15 Pro"
-                                        required
-                                    >
-
+                                @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
                                 </div>
-
+                                @enderror
                             </div>
 
-                            <div class="col-md-4">
+                            {{-- Price --}}
+                            <div class="mb-3">
+                                <label for="price" class="form-label fw-semibold">
+                                    Price
+                                </label>
 
-                                <div class="mb-3">
-
-                                    <label class="form-label fw-semibold">
-                                        Price (₹) *
-                                    </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
 
                                     <input
                                         type="number"
                                         name="price"
-                                        class="form-control"
+                                        id="price"
+                                        class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price') }}"
-                                        step="0.01"
-                                        min="0"
                                         placeholder="0.00"
-                                        required
-                                    >
-
+                                        min="0"
+                                        step="0.01"
+                                        required>
                                 </div>
 
+                                @error('price')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
 
-                        </div>
+                            {{-- Description --}}
+                            <div class="mb-3">
+                                <label for="description" class="form-label fw-semibold">
+                                    Description
+                                </label>
 
-                        <div class="mb-4">
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    rows="4"
+                                    class="form-control @error('description') is-invalid @enderror"
+                                    placeholder="Enter product description">{{ old('description') }}</textarea>
 
-                            <label class="form-label fw-semibold">
-                                Description
-                            </label>
+                                @error('description')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
 
-                            <textarea
-                                name="description"
-                                class="form-control"
-                                rows="3"
-                                placeholder="Product details..."
-                            >{{ old('description') }}</textarea>
+                            {{-- Product Status --}}
+                            <div class="mb-3">
+                                <label for="status" class="form-label fw-semibold">
+                                    Product Status
+                                </label>
 
-                        </div>
+                                <select
+                                    name="status"
+                                    id="status"
+                                    class="form-select @error('status') is-invalid @enderror">
+                                    <option
+                                        value="active"
+                                        {{ old('status', 'active') === 'active' ? 'selected' : '' }}>
+                                        Active
+                                    </option>
 
-                        <hr>
+                                    <option
+                                        value="inactive"
+                                        {{ old('status') === 'inactive' ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+                                </select>
 
-                        <h5 class="mb-3">
-                            🎨 QR Code Customization
-                        </h5>
+                                @error('status')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
 
-                        <div class="row">
+                                <div class="form-text">
+                                    Inactive products will not be available through their QR code.
+                                </div>
+                            </div>
 
-                            <div class="col-md-4">
+                            <hr class="my-4">
 
-                                <label class="form-label fw-semibold">
+                            <h5 class="mb-3">
+                                🔳 QR Code Settings
+                            </h5>
+
+                            {{-- QR Foreground Color --}}
+                            <div class="mb-3">
+                                <label
+                                    for="qr_foreground_color"
+                                    class="form-label fw-semibold">
                                     QR Foreground Color
                                 </label>
 
-                                <input
-                                    type="color"
-                                    name="qr_foreground_color"
-                                    id="foregroundColor"
-                                    class="form-control form-control-color color-preview"
-                                    value="{{ old('qr_foreground_color', '#000000') }}"
-                                    title="Choose QR foreground color"
-                                >
+                                <div class="d-flex gap-2 align-items-center">
 
+                                    <input
+                                        type="color"
+                                        id="qr_foreground_picker"
+                                        class="form-control form-control-color"
+                                        value="{{ old('qr_foreground_color', '#000000') }}">
+
+                                    <input
+                                        type="text"
+                                        name="qr_foreground_color"
+                                        id="qr_foreground_color"
+                                        class="form-control @error('qr_foreground_color') is-invalid @enderror"
+                                        value="{{ old('qr_foreground_color', '#000000') }}"
+                                        placeholder="#000000">
+
+                                </div>
+
+                                @error('qr_foreground_color')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
 
-                            <div class="col-md-4">
-
-                                <label class="form-label fw-semibold">
+                            {{-- QR Background Color --}}
+                            <div class="mb-3">
+                                <label
+                                    for="qr_background_color"
+                                    class="form-label fw-semibold">
                                     QR Background Color
                                 </label>
 
-                                <input
-                                    type="color"
-                                    name="qr_background_color"
-                                    id="backgroundColor"
-                                    class="form-control form-control-color color-preview"
-                                    value="{{ old('qr_background_color', '#ffffff') }}"
-                                    title="Choose QR background color"
-                                >
+                                <div class="d-flex gap-2 align-items-center">
 
+                                    <input
+                                        type="color"
+                                        id="qr_background_picker"
+                                        class="form-control form-control-color"
+                                        value="{{ old('qr_background_color', '#ffffff') }}">
+
+                                    <input
+                                        type="text"
+                                        name="qr_background_color"
+                                        id="qr_background_color"
+                                        class="form-control @error('qr_background_color') is-invalid @enderror"
+                                        value="{{ old('qr_background_color', '#ffffff') }}"
+                                        placeholder="#ffffff">
+
+                                </div>
+
+                                @error('qr_background_color')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
 
-                            <div class="col-md-4">
-
-                                <label class="form-label fw-semibold">
-                                    QR Size
+                            {{-- QR Size --}}
+                            <div class="mb-3">
+                                <label
+                                    for="qr_size"
+                                    class="form-label fw-semibold">
+                                    QR Code Size
                                 </label>
 
                                 <select
                                     name="qr_size"
-                                    id="qrSize"
-                                    class="form-select"
-                                >
+                                    id="qr_size"
+                                    class="form-select @error('qr_size') is-invalid @enderror">
 
-                                    <option value="200">
-                                        200 × 200
+                                    @foreach ([200, 300, 400, 500, 600, 800, 1000] as $size)
+
+                                    <option
+                                        value="{{ $size }}"
+                                        {{ old('qr_size', 300) == $size ? 'selected' : '' }}>
+                                        {{ $size }} × {{ $size }} px
                                     </option>
 
-                                    <option value="300" selected>
-                                        300 × 300
-                                    </option>
-
-                                    <option value="400">
-                                        400 × 400
-                                    </option>
-
-                                    <option value="500">
-                                        500 × 500
-                                    </option>
-
-                                    <option value="600">
-                                        600 × 600
-                                    </option>
-
-                                    <option value="800">
-                                        800 × 800
-                                    </option>
-
-                                    <option value="1000">
-                                        1000 × 1000
-                                    </option>
+                                    @endforeach
 
                                 </select>
 
+                                @error('qr_size')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
 
-                        </div>
+                            {{-- QR Expiration --}}
+                            <div class="mb-4">
 
-                        <div class="alert alert-info mt-4">
+                                <label
+                                    for="qr_expires_at"
+                                    class="form-label fw-semibold">
+                                    QR Code Expiration
+                                </label>
 
-                            <strong>💡 QR Code Tip</strong>
+                                <input
+                                    type="datetime-local"
+                                    name="qr_expires_at"
+                                    id="qr_expires_at"
+                                    class="form-control @error('qr_expires_at') is-invalid @enderror"
+                                    value="{{ old('qr_expires_at') }}"
+                                    min="{{ now()->format('Y-m-d\TH:i') }}">
 
-                            <br>
+                                @error('qr_expires_at')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
 
-                            Use a dark foreground with a light background
-                            for better scanning reliability.
+                                <div class="form-text">
+                                    Leave empty if the QR code should never expire.
+                                </div>
 
-                        </div>
+                            </div>
 
-                        <div class="d-flex gap-2 mt-4">
+                            {{-- Buttons --}}
+                            <div class="d-flex justify-content-between">
 
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
-                                Save & Generate QR
-                            </button>
+                                <a
+                                    href="{{ route('products.index') }}"
+                                    class="btn btn-outline-secondary">
+                                    ← Back
+                                </a>
 
-                            <a
-                                href="{{ route('products.index') }}"
-                                class="btn btn-secondary"
-                            >
-                                Cancel
-                            </a>
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary px-4">
+                                    Generate QR & Create Product
+                                </button>
 
-                        </div>
+                            </div>
 
-                    </form>
+                        </form>
+
+                    </div>
 
                 </div>
 
@@ -271,7 +313,46 @@
 
     </div>
 
-</div>
+    <script>
+        const foregroundPicker =
+            document.getElementById('qr_foreground_picker');
+
+        const foregroundInput =
+            document.getElementById('qr_foreground_color');
+
+        const backgroundPicker =
+            document.getElementById('qr_background_picker');
+
+        const backgroundInput =
+            document.getElementById('qr_background_color');
+
+
+        foregroundPicker.addEventListener('input', function() {
+            foregroundInput.value = this.value;
+        });
+
+        foregroundInput.addEventListener('input', function() {
+
+            if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+                foregroundPicker.value = this.value;
+            }
+
+        });
+
+
+        backgroundPicker.addEventListener('input', function() {
+            backgroundInput.value = this.value;
+        });
+
+        backgroundInput.addEventListener('input', function() {
+
+            if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+                backgroundPicker.value = this.value;
+            }
+
+        });
+    </script>
 
 </body>
+
 </html>
